@@ -5,14 +5,15 @@
 
 ## Published Images
 
-_No images have been published yet. The table below will be populated after the first successful publish run._
-
 | Plugin | Kind | Version | Image | Upstream Tag | Upstream Commit | Built |
 |--------|------|---------|-------|-------------|-----------------|-------|
+| file | destination | v5.5.1 | `ghcr.io/infobloxopen/cloudquery-plugin-file:v5.5.1` | plugins-destination-file-v5.5.1 | `09c6e152c533` | 2026-02-13T03:35:32-06:00 |
+| postgresql | destination | v8.14.1 | `ghcr.io/infobloxopen/cloudquery-plugin-postgresql:v8.14.1` | plugins-destination-postgresql-v8.14.1 | `a5431aea2c89` | 2026-02-13T03:35:32-06:00 |
+| s3 | destination | v7.10.2 | `ghcr.io/infobloxopen/cloudquery-plugin-s3:v7.10.2` | plugins-destination-s3-v7.10.2 | `090de0b96fa1` | 2026-02-13T03:35:32-06:00 |
 
 ## Artifact
 
 The machine-readable build index (`build-index.json`) is available as a workflow artifact
-from each [publish run](https://github.com/infobloxopen/cloudquery-plugins-builder/actions/workflows/publish.yaml).
+from each [publish run](https://github.com/infobloxopen/cloudquery-plugins-builder/actions/runs/21981906586).
 
 **Schema**: [`schemas/build-index.schema.json`](../schemas/build-index.schema.json)
