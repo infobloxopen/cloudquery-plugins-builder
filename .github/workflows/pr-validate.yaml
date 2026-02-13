@@ -61,7 +61,9 @@ jobs:
         run: |
           chmod +x scripts/generate-matrix.sh
           MATRIX=$(./scripts/generate-matrix.sh)
-          echo "result=${MATRIX}" >> "$GITHUB_OUTPUT"
+          echo "result<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$MATRIX" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
   # ─── Step 3: Build and smoke test each plugin (no push) ───────────────────
   build-and-test:
