@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cloudquery-sync-file
+spec:
+  template:
+    spec:
+      containers:
+        - name: cloudquery
+          image: ghcr.io/cloudquery/cloudquery:latest
+          args: ["sync", "/config/cloudquery.yaml"]
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          configMap:
+            name: cloudquery-sync-file-config
+      restartPolicy: Never
+  backoffLimit: 3
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudquery-sync-file-config
+data:
+  cloudquery.yaml: |
+    kind: destination
+    spec:
+      name: file
+      registry: grpc
+      path: cloudquery-plugin-file:7777
+      spec:
+        directory: "/output"
+        format: "csv"
+        path: "{{TABLE}}/{{UUID}}.csv"

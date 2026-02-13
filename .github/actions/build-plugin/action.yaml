@@ -1,0 +1,139 @@
+name: 'Build CloudQuery Plugin'
+description: 'Build, test, and optionally push a CloudQuery plugin OCI image'
+
+inputs:
+  name:
+    description: 'Plugin short name (e.g., postgresql)'
+    required: true
+  kind:
+    description: 'Plugin kind (source or destination)'
+    required: true
+  version:
+    description: 'Plugin version (e.g., v8.14.1)'
+    required: true
+  upstream_repo:
+    description: 'Upstream git repository URL'
+    required: true
+  upstream_tag:
+    description: 'Upstream git tag to build from'
+    required: true
+  upstream_commit:
+    description: 'Expected upstream commit SHA'
+    required: true
+  plugin_dir:
+    description: 'Relative path to plugin source in upstream repo'
+    required: true
+  go_version:
+    description: 'Go toolchain version'
+    required: true
+  bin_name:
+    description: 'Output binary name'
+    required: false
+    default: 'plugin'
+  ldflags_version_path:
+    description: 'Go package path for -X version injection'
+    required: false
+    default: ''
+  push:
+    description: 'Push image to registry (true/false)'
+    required: false
+    default: 'false'
+  registry:
+    description: 'Container registry base URL'
+    required: false
+    default: 'ghcr.io/infobloxopen'
+  smoke_test:
+    description: 'Run smoke test after build (true/false)'
+    required: false
+    default: 'true'
+  cosign_sign:
+    description: 'Sign image with cosign (true/false, requires push=true)'
+    required: false
+    default: 'false'
+
+outputs:
+  image:
+    description: 'Full image reference with tag'
+    value: ${{ steps.meta.outputs.image }}
+  digest:
+    description: 'Image manifest digest'
+    value: ${{ steps.build.outputs.digest }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set image metadata
+      id: meta
+      shell: bash
+      run: |
+        IMAGE="${{ inputs.registry }}/cloudquery-plugin-${{ inputs.name }}:${{ inputs.version }}"
+        echo "image=${IMAGE}" >> "$GITHUB_OUTPUT"
+        echo "Building: ${IMAGE}"
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
+      with:
+        platforms: linux/amd64,linux/arm64
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
+
+    - name: Log in to GHCR
+      if: inputs.push == 'true'
+      uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+
+    - name: Build image
+      id: build
+      uses: docker/build-push-action@263435318d21b8e681c14492fe198e19c816612b # v6.18.0
+      with:
+        context: .
+        platforms: ${{ inputs.push == 'true' && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
+        push: ${{ inputs.push }}
+        load: ${{ inputs.push != 'true' }}
+        tags: ${{ steps.meta.outputs.image }}
+        sbom: ${{ inputs.push == 'true' }}
+        provenance: ${{ inputs.push == 'true' && 'mode=max' || 'false' }}
+        build-args: |
+          GO_VERSION=${{ inputs.go_version }}
+          PLUGIN_DIR=${{ inputs.plugin_dir }}
+          PLUGIN_VERSION=${{ inputs.version }}
+          LDFLAGS_VERSION_PATH=${{ inputs.ldflags_version_path }}
+          BIN_NAME=${{ inputs.bin_name }}
+          UPSTREAM_REPO=${{ inputs.upstream_repo }}
+          UPSTREAM_TAG=${{ inputs.upstream_tag }}
+        labels: |
+          org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          org.opencontainers.image.revision=${{ github.sha }}
+          org.opencontainers.image.created=${{ github.event.head_commit.timestamp || github.event.pull_request.updated_at }}
+          org.opencontainers.image.version=${{ inputs.version }}
+          org.opencontainers.image.title=cloudquery-plugin-${{ inputs.name }}
+          org.opencontainers.image.description=CloudQuery ${{ inputs.kind }} plugin ${{ inputs.name }} ${{ inputs.version }}
+          org.opencontainers.image.licenses=MPL-2.0
+          io.cloudquery.plugin.kind=${{ inputs.kind }}
+          io.cloudquery.plugin.name=${{ inputs.name }}
+          io.cloudquery.plugin.upstream-repo=${{ inputs.upstream_repo }}
+          io.cloudquery.plugin.upstream-tag=${{ inputs.upstream_tag }}
+          io.cloudquery.plugin.upstream-commit=${{ inputs.upstream_commit }}
+
+    - name: Smoke test
+      if: inputs.smoke_test == 'true'
+      shell: bash
+      run: |
+        chmod +x scripts/smoke-test.sh
+        ./scripts/smoke-test.sh "${{ steps.meta.outputs.image }}"
+
+    - name: Sign with cosign
+      if: inputs.cosign_sign == 'true' && inputs.push == 'true'
+      uses: sigstore/cosign-installer@3454372f43399081ed03b604cb2d021dabca52bb # v3.8.2
+      # Cosign is installed; now sign the image
+    - name: Sign image
+      if: inputs.cosign_sign == 'true' && inputs.push == 'true'
+      shell: bash
+      env:
+        COSIGN_EXPERIMENTAL: "1"
+      run: |
+        cosign sign --yes "${{ steps.meta.outputs.image }}@${{ steps.build.outputs.digest }}"

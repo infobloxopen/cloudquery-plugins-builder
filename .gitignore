@@ -1,0 +1,40 @@
+# Go build artifacts
+cmd/entrypoint/entrypoint
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go module cache (local)
+vendor/
+
+# Docker
+*.tar
+*.tar.gz
+
+# Build outputs
+build-index.json
+
+# Environment / secrets
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*~
+
+# Editor / IDE
+.vscode/
+.idea/
+*.iml
+
+# Coverage
+coverage/
+*.cover
+*.coverprofile

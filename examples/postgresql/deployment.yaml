@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudquery-plugin-postgresql
+  labels:
+    app: cloudquery-plugin-postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudquery-plugin-postgresql
+  template:
+    metadata:
+      labels:
+        app: cloudquery-plugin-postgresql
+    spec:
+      containers:
+        - name: plugin
+          image: ghcr.io/infobloxopen/cloudquery-plugin-postgresql:v8.14.1
+          ports:
+            - containerPort: 7777
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 7777
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 7777
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudquery-plugin-postgresql
+spec:
+  selector:
+    app: cloudquery-plugin-postgresql
+  ports:
+    - port: 7777
+      targetPort: 7777
+      protocol: TCP

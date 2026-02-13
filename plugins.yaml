@@ -1,0 +1,40 @@
+apiVersion: v1
+plugins:
+  - name: s3
+    kind: destination
+    version: v7.10.2
+    upstream:
+      repo: https://github.com/cloudquery/cloudquery
+      tag: plugins-destination-s3-v7.10.2
+      commit: 090de0b96fa156618c2e1d0e00f75f4825340eb4
+    build:
+      plugin_dir: plugins/destination/s3
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/s3/v7/resources/plugin.Version
+
+  - name: file
+    kind: destination
+    version: v5.5.1
+    upstream:
+      repo: https://github.com/cloudquery/cloudquery
+      tag: plugins-destination-file-v5.5.1
+      commit: 09c6e152c5335ab0157ed6da855b31e285539b3f
+    build:
+      plugin_dir: plugins/destination/file
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/file/v5/resources/plugin.Version
+
+  - name: postgresql
+    kind: destination
+    version: v8.14.1
+    upstream:
+      repo: https://github.com/cloudquery/cloudquery
+      tag: plugins-destination-postgresql-v8.14.1
+      commit: a5431aea2c8920890ea94de5abe7a485bd29e2f6
+    build:
+      plugin_dir: plugins/destination/postgresql
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/resources/plugin.Version

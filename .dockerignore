@@ -1,0 +1,39 @@
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+
+# Documentation
+docs/
+specs/
+*.md
+!README.md
+LICENSE
+
+# Examples (not needed in build context)
+examples/
+
+# Schemas (not needed in build context)
+schemas/
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+build-index.json
+*.tar
+*.tar.gz
+
+# Environment
+.env
+.env.*
+
+# Speckit
+.specify/

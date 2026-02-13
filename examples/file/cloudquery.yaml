@@ -1,0 +1,11 @@
+# CloudQuery configuration for File destination plugin.
+# This config references the plugin running as a gRPC server in Kubernetes.
+kind: destination
+spec:
+  name: file
+  registry: grpc
+  path: cloudquery-plugin-file:7777
+  spec:
+    directory: "/output"
+    format: "csv"
+    path: "{{TABLE}}/{{UUID}}.csv"

@@ -1,0 +1,13 @@
+# CloudQuery configuration for PostgreSQL destination plugin.
+# This config references the plugin running as a gRPC server in Kubernetes.
+#
+# Usage: The CloudQuery CLI (running in a Job or CronJob) reads this file
+# and connects to the plugin service via gRPC instead of downloading
+# from CloudQuery Hub.
+kind: destination
+spec:
+  name: postgresql
+  registry: grpc
+  path: cloudquery-plugin-postgresql:7777
+  spec:
+    connection_string: "${PG_CONNECTION_STRING}"

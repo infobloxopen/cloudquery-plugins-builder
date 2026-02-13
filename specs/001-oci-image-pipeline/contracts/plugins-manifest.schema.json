@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/infobloxopen/cloudquery-plugins-builder/schemas/plugins-manifest.schema.json",
+  "title": "CloudQuery Plugins Builder Manifest",
+  "description": "Declarative manifest defining which CloudQuery plugins and versions to build as OCI images.",
+  "type": "object",
+  "required": ["apiVersion", "plugins"],
+  "additionalProperties": false,
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "const": "v1",
+      "description": "Manifest schema version."
+    },
+    "plugins": {
+      "type": "array",
+      "minItems": 1,
+      "description": "List of plugins to build.",
+      "items": {
+        "$ref": "#/$defs/pluginEntry"
+      }
+    }
+  },
+  "$defs": {
+    "pluginEntry": {
+      "type": "object",
+      "required": ["name", "kind", "version", "upstream", "build"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "Plugin short name (used in image name). Lowercase, alphanumeric + hyphens.",
+          "examples": ["postgresql", "s3", "file"]
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["source", "destination"],
+          "description": "Plugin kind."
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^v\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9.]+)?$",
+          "description": "Semantic version with v prefix.",
+          "examples": ["v8.14.1", "v7.10.2"]
+        },
+        "upstream": {
+          "$ref": "#/$defs/upstream"
+        },
+        "build": {
+          "$ref": "#/$defs/build"
+        }
+      }
+    },
+    "upstream": {
+      "type": "object",
+      "required": ["repo", "tag", "commit"],
+      "additionalProperties": false,
+      "properties": {
+        "repo": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://",
+          "description": "Upstream git repository URL (HTTPS)."
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Exact git tag to check out."
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "description": "Full 40-character commit SHA the tag resolves to."
+        }
+      }
+    },
+    "build": {
+      "type": "object",
+      "required": ["plugin_dir", "go_version"],
+      "additionalProperties": false,
+      "properties": {
+        "plugin_dir": {
+          "type": "string",
+          "pattern": "^[^/]",
+          "not": { "pattern": "\\.\\." },
+          "description": "Relative path to plugin source within the upstream repo."
+        },
+        "go_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+(\\.\\d+)?$",
+          "description": "Go toolchain version to use for the build."
+        },
+        "bin_name": {
+          "type": "string",
+          "default": "plugin",
+          "description": "Output binary name (default: 'plugin')."
+        },
+        "ldflags_version_path": {
+          "type": "string",
+          "description": "Go package path for -X version injection via ldflags."
+        }
+      }
+    }
+  }
+}

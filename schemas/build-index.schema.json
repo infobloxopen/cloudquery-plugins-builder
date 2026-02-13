@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/infobloxopen/cloudquery-plugins-builder/schemas/build-index.schema.json",
+  "title": "CloudQuery Plugins Builder Build Index",
+  "description": "Machine-readable index of all built and published OCI images.",
+  "type": "object",
+  "required": ["generated_at", "ci_run_url", "images"],
+  "additionalProperties": false,
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC-3339 timestamp when this index was generated."
+    },
+    "ci_run_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL of the GitHub Actions workflow run."
+    },
+    "images": {
+      "type": "array",
+      "description": "List of built images.",
+      "items": {
+        "$ref": "#/$defs/imageRecord"
+      }
+    }
+  },
+  "$defs": {
+    "imageRecord": {
+      "type": "object",
+      "required": [
+        "plugin_kind",
+        "plugin_name",
+        "version",
+        "image",
+        "digests",
+        "upstream_repo",
+        "upstream_tag",
+        "upstream_commit",
+        "build_timestamp"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "plugin_kind": {
+          "type": "string",
+          "enum": ["source", "destination"]
+        },
+        "plugin_name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string",
+          "description": "Full image reference with tag."
+        },
+        "digests": {
+          "type": "object",
+          "required": ["index"],
+          "properties": {
+            "index": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "description": "Manifest list (index) digest."
+            },
+            "linux/amd64": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "linux/arm64": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        },
+        "upstream_repo": {
+          "type": "string",
+          "format": "uri"
+        },
+        "upstream_tag": {
+          "type": "string"
+        },
+        "upstream_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "build_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sbom_attached": {
+          "type": "boolean"
+        },
+        "provenance_attached": {
+          "type": "boolean"
+        },
+        "cosign_signed": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

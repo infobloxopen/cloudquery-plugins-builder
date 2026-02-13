@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudquery-plugin-file
+  labels:
+    app: cloudquery-plugin-file
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudquery-plugin-file
+  template:
+    metadata:
+      labels:
+        app: cloudquery-plugin-file
+    spec:
+      containers:
+        - name: plugin
+          image: ghcr.io/infobloxopen/cloudquery-plugin-file:v5.5.1
+          ports:
+            - containerPort: 7777
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 7777
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 7777
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: output
+              mountPath: /output
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: output
+          persistentVolumeClaim:
+            claimName: cloudquery-file-output
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudquery-plugin-file
+spec:
+  selector:
+    app: cloudquery-plugin-file
+  ports:
+    - port: 7777
+      targetPort: 7777
+      protocol: TCP

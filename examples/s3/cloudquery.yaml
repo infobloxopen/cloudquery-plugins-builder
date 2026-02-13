@@ -1,0 +1,12 @@
+# CloudQuery configuration for S3 destination plugin.
+# This config references the plugin running as a gRPC server in Kubernetes.
+kind: destination
+spec:
+  name: s3
+  registry: grpc
+  path: cloudquery-plugin-s3:7777
+  spec:
+    bucket: "my-cloudquery-bucket"
+    region: "us-east-1"
+    format: "parquet"
+    path: "cloudquery/{{TABLE}}/{{UUID}}.parquet"
