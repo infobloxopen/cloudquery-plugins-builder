@@ -35,7 +35,7 @@ data:
     spec:
       name: s3
       registry: grpc
-      path: cloudquery-plugin-s3:7777
+      path: cq-destination-s3:7777
       spec:
         bucket: "my-cloudquery-bucket"
         region: "us-east-1"

@@ -104,7 +104,7 @@ jobs:
             "plugin_kind": "${{ matrix.kind }}",
             "plugin_name": "${{ matrix.name }}",
             "version": "${{ matrix.version }}",
-            "image": "ghcr.io/${{ github.repository_owner }}/cloudquery-plugin-${{ matrix.name }}:${{ matrix.version }}",
+            "image": "ghcr.io/${{ github.repository_owner }}/cq-${{ matrix.kind }}-${{ matrix.name }}:${{ matrix.version }}",
             "upstream_repo": "${{ matrix.upstream_repo }}",
             "upstream_tag": "${{ matrix.upstream_tag }}",
             "upstream_commit": "${{ matrix.upstream_commit }}",

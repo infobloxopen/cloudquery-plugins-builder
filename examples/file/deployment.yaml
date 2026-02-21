@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudquery-plugin-file
+  name: cq-destination-file
   labels:
-    app: cloudquery-plugin-file
+    app: cq-destination-file
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cloudquery-plugin-file
+      app: cq-destination-file
   template:
     metadata:
       labels:
-        app: cloudquery-plugin-file
+        app: cq-destination-file
     spec:
       containers:
         - name: plugin
-          image: ghcr.io/infobloxopen/cloudquery-plugin-file:v5.5.1
+          image: ghcr.io/infobloxopen/cq-destination-file:v5.5.1
           ports:
             - containerPort: 7777
               protocol: TCP
@@ -58,10 +58,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: cloudquery-plugin-file
+  name: cq-destination-file
 spec:
   selector:
-    app: cloudquery-plugin-file
+    app: cq-destination-file
   ports:
     - port: 7777
       targetPort: 7777
