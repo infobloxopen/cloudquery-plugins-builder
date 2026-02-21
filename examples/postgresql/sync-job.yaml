@@ -32,7 +32,7 @@ data:
     spec:
       name: postgresql
       registry: grpc
-      path: cloudquery-plugin-postgresql:7777
+      path: cq-destination-postgresql:7777
       spec:
         connection_string: "${PG_CONNECTION_STRING}"
 ---

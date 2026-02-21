@@ -4,7 +4,7 @@
 # Usage: ./scripts/smoke-test.sh <image> [port] [timeout]
 #
 # Arguments:
-#   image   — Full image reference (e.g., ghcr.io/infobloxopen/cloudquery-plugin-postgresql:v8.14.1)
+#   image   — Full image reference (e.g., ghcr.io/infobloxopen/cq-destination-postgresql:v8.14.1)
 #   port    — Port to check (default: 7777)
 #   timeout — Max seconds to wait (default: 30)
 #

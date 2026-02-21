@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudquery-plugin-postgresql
+  name: cq-destination-postgresql
   labels:
-    app: cloudquery-plugin-postgresql
+    app: cq-destination-postgresql
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cloudquery-plugin-postgresql
+      app: cq-destination-postgresql
   template:
     metadata:
       labels:
-        app: cloudquery-plugin-postgresql
+        app: cq-destination-postgresql
     spec:
       containers:
         - name: plugin
-          image: ghcr.io/infobloxopen/cloudquery-plugin-postgresql:v8.14.1
+          image: ghcr.io/infobloxopen/cq-destination-postgresql:v8.14.1
           ports:
             - containerPort: 7777
               protocol: TCP
@@ -53,10 +53,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: cloudquery-plugin-postgresql
+  name: cq-destination-postgresql
 spec:
   selector:
-    app: cloudquery-plugin-postgresql
+    app: cq-destination-postgresql
   ports:
     - port: 7777
       targetPort: 7777

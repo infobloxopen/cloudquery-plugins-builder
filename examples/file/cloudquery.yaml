@@ -4,7 +4,7 @@ kind: destination
 spec:
   name: file
   registry: grpc
-  path: cloudquery-plugin-file:7777
+  path: cq-destination-file:7777
   spec:
     directory: "/output"
     format: "csv"

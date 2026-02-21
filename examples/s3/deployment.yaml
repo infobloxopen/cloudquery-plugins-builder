@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudquery-plugin-s3
+  name: cq-destination-s3
   labels:
-    app: cloudquery-plugin-s3
+    app: cq-destination-s3
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cloudquery-plugin-s3
+      app: cq-destination-s3
   template:
     metadata:
       labels:
-        app: cloudquery-plugin-s3
+        app: cq-destination-s3
     spec:
       containers:
         - name: plugin
-          image: ghcr.io/infobloxopen/cloudquery-plugin-s3:v7.10.2
+          image: ghcr.io/infobloxopen/cq-destination-s3:v7.10.2
           ports:
             - containerPort: 7777
               protocol: TCP
@@ -53,10 +53,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: cloudquery-plugin-s3
+  name: cq-destination-s3
 spec:
   selector:
-    app: cloudquery-plugin-s3
+    app: cq-destination-s3
   ports:
     - port: 7777
       targetPort: 7777

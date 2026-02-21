@@ -114,13 +114,15 @@ plugins:
 ## Image Naming Convention
 
 ```
-ghcr.io/infobloxopen/cloudquery-plugin-<name>:<version>
+ghcr.io/infobloxopen/cq-<kind>-<name>:<version>
 ```
 
+Where `<kind>` is `source` or `destination`.
+
 Examples:
-- `ghcr.io/infobloxopen/cloudquery-plugin-postgresql:v8.14.1`
-- `ghcr.io/infobloxopen/cloudquery-plugin-s3:v7.10.2`
-- `ghcr.io/infobloxopen/cloudquery-plugin-file:v5.5.1`
+- `ghcr.io/infobloxopen/cq-destination-postgresql:v8.14.1`
+- `ghcr.io/infobloxopen/cq-destination-s3:v7.10.2`
+- `ghcr.io/infobloxopen/cq-destination-file:v5.5.1`
 
 ### OCI Labels
 
@@ -148,7 +150,7 @@ Each plugin includes deployment examples in `examples/<plugin>/`:
 kubectl apply -f examples/postgresql/deployment.yaml
 
 # Wait for readiness
-kubectl wait --for=condition=ready pod -l app=cloudquery-plugin-postgresql --timeout=60s
+kubectl wait --for=condition=ready pod -l app=cq-destination-postgresql --timeout=60s
 
 # Run a sync job
 kubectl apply -f examples/postgresql/sync-job.yaml

@@ -65,7 +65,13 @@ GO_VERSION=$(yq ".plugins[${PLUGIN_INDEX}].build.go_version" "$MANIFEST")
 BIN_NAME=$(yq ".plugins[${PLUGIN_INDEX}].build.bin_name // \"plugin\"" "$MANIFEST")
 LDFLAGS_VERSION_PATH=$(yq ".plugins[${PLUGIN_INDEX}].build.ldflags_version_path // \"\"" "$MANIFEST")
 
-IMAGE_NAME="${IMAGE_ORG}/cloudquery-plugin-${PLUGIN_NAME}:${VERSION}"
+# Validate plugin kind (defense-in-depth — JSON Schema also enforces this)
+case "$KIND" in
+  source|destination) ;;
+  *) error "Unknown plugin kind '${KIND}' for plugin '${PLUGIN_NAME}'. Must be 'source' or 'destination'."; exit 1 ;;
+esac
+
+IMAGE_NAME="${IMAGE_ORG}/cq-${KIND}-${PLUGIN_NAME}:${VERSION}"
 
 # Set default platforms
 if [[ -z "$PLATFORMS" ]]; then
@@ -99,7 +105,7 @@ LABELS=(
   --label "org.opencontainers.image.source=https://github.com/infobloxopen/cloudquery-plugins-builder"
   --label "org.opencontainers.image.created=${BUILD_TIMESTAMP}"
   --label "org.opencontainers.image.version=${VERSION}"
-  --label "org.opencontainers.image.title=cloudquery-plugin-${PLUGIN_NAME}"
+  --label "org.opencontainers.image.title=cq-${KIND}-${PLUGIN_NAME}"
   --label "org.opencontainers.image.description=CloudQuery ${KIND} plugin ${PLUGIN_NAME} ${VERSION}"
   --label "org.opencontainers.image.licenses=MPL-2.0"
   --label "io.cloudquery.plugin.kind=${KIND}"
