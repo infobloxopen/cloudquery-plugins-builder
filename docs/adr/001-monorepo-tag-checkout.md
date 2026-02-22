@@ -35,3 +35,20 @@ We build from upstream monorepo tags using `git clone --depth=1 --branch=<tag>`.
 - **Positive**: Shallow clone (`--depth=1`) minimises download size
 - **Negative**: Downloads full monorepo tree at the tag (~100MB), but this happens in a disposable Docker build stage
 - **Mitigation**: Docker layer caching in CI reduces repeated downloads for unchanged tags
+
+## Addendum: Migration to Infoblox Fork (2026-02-22)
+
+**Context**: Infoblox now maintains a fork of the CloudQuery monorepo at `https://github.com/infobloxopen/cloudquery`. All image builds have been migrated to use the fork as the source repository instead of the upstream `https://github.com/cloudquery/cloudquery`.
+
+**Impact on this ADR**: The original decision (D1 — Monorepo Tag Checkout) remains fully valid. The fork retains the same monorepo structure, tag naming convention, and commit SHAs. The only change is the git clone URL passed to `git clone --depth=1 --branch=<tag>`.
+
+**What changed**:
+- `plugins.yaml` `upstream.repo` fields → `https://github.com/infobloxopen/cloudquery`
+- `Dockerfile` `UPSTREAM_REPO` default → `https://github.com/infobloxopen/cloudquery`
+
+**What did NOT change**:
+- Tag checkout strategy (still `git clone --depth=1 --branch=<tag>`)
+- Go module paths (`ldflags_version_path`) — the fork's source code retains `github.com/cloudquery/cloudquery` as the Go module path
+- Build process, Dockerfile structure, or validation logic
+
+See [spec 004](../../specs/004-use-fork-repo/spec.md) for full details.

@@ -13,7 +13,7 @@ ARG PLUGIN_DIR=plugins/destination/postgresql
 ARG PLUGIN_VERSION=v8.14.1
 ARG LDFLAGS_VERSION_PATH=""
 ARG BIN_NAME=plugin
-ARG UPSTREAM_REPO=https://github.com/cloudquery/cloudquery
+ARG UPSTREAM_REPO=https://github.com/infobloxopen/cloudquery
 ARG UPSTREAM_TAG=plugins-destination-postgresql-v8.14.1
 
 # Clone upstream at the exact tag (shallow clone for speed)

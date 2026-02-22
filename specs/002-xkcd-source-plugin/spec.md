@@ -18,7 +18,7 @@ As an **operator**, I add the XKCD source plugin entry to `plugins.yaml` so that
 **Acceptance Scenarios**:
 
 1. **Given** `plugins.yaml` contains an entry for `xkcd` source plugin at the target version, **When** CI runs on the `main` branch, **Then** a multi-arch OCI image (`linux/amd64` + `linux/arm64`) is pushed to `ghcr.io/<org>/cloudquery-plugin-xkcd:<version>` with correct OCI labels matching the manifest entry.
-2. **Given** the XKCD plugin entry in the manifest specifies the upstream repo as `https://github.com/cloudquery/cloudquery`, the correct git tag, and the matching commit SHA, **When** CI validates the manifest, **Then** all upstream references resolve successfully and validation passes.
+2. **Given** the XKCD plugin entry in the manifest specifies the upstream repo as `https://github.com/infobloxopen/cloudquery`, the correct git tag, and the matching commit SHA, **When** CI validates the manifest, **Then** all upstream references resolve successfully and validation passes.
 3. **Given** the XKCD plugin image is published, **When** the smoke test runs, **Then** the container starts and the gRPC port accepts connections within 30 seconds.
 
 ---
@@ -82,7 +82,7 @@ As an **operator**, I use the provided Kubernetes example manifests to deploy th
 
 ### Functional Requirements
 
-- **FR-001**: The `plugins.yaml` manifest MUST contain a new entry for the XKCD source plugin specifying: kind (`source`), name (`xkcd`), version (matching a released upstream tag), upstream repo (`https://github.com/cloudquery/cloudquery`), upstream git tag (e.g., `plugins-source-xkcd-v1.5.33`), upstream commit SHA, and build configuration (plugin directory path, Go version, ldflags version path).
+- **FR-001**: The `plugins.yaml` manifest MUST contain a new entry for the XKCD source plugin specifying: kind (`source`), name (`xkcd`), version (matching a released upstream tag), upstream repo (`https://github.com/infobloxopen/cloudquery`), upstream git tag (e.g., `plugins-source-xkcd-v1.5.33`), upstream commit SHA, and build configuration (plugin directory path, Go version, ldflags version path).
 - **FR-002**: The manifest entry MUST specify the correct `plugin_dir` as `plugins/source/xkcd` and the correct `ldflags_version_path` to inject the version string into the plugin binary at build time.
 - **FR-003**: The built OCI image MUST expose a single table, `xkcd_comics`, with the following columns: `num` (primary key, int64), `month` (utf8), `link` (utf8), `year` (utf8), `news` (utf8), `safe_title` (utf8), `transcript` (utf8), `alt` (utf8), `img` (utf8), `title` (utf8), `day` (utf8), plus CloudQuery internal columns (`_cq_id`, `_cq_parent_id`).
 - **FR-004**: The plugin MUST fetch comic data from the public XKCD JSON API (`https://xkcd.com/{num}/info.0.json` for specific comics, `https://xkcd.com/info.0.json` for the latest comic) without requiring any authentication.

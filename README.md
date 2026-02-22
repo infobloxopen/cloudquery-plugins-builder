@@ -92,7 +92,7 @@ plugins:
     kind: destination             # "source" or "destination"
     version: v8.14.1              # Semantic version (matches upstream tag)
     upstream:
-      repo: https://github.com/cloudquery/cloudquery
+      repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-postgresql-v8.14.1
       commit: a5431aea2c8920890ea94de5abe7a485bd29e2f6  # Pinned for reproducibility
     build:
@@ -104,9 +104,9 @@ plugins:
 
 ### Adding a new plugin
 
-1. Look up the plugin in the [CloudQuery monorepo](https://github.com/cloudquery/cloudquery)
+1. Look up the plugin in the [Infoblox CloudQuery fork](https://github.com/infobloxopen/cloudquery) (forked from the [upstream CloudQuery monorepo](https://github.com/cloudquery/cloudquery))
 2. Find the latest release tag (e.g., `plugins-destination-mysql-v3.2.0`)
-3. Resolve the tag to a commit SHA: `git ls-remote https://github.com/cloudquery/cloudquery plugins-destination-mysql-v3.2.0`
+3. Resolve the tag to a commit SHA: `git ls-remote https://github.com/infobloxopen/cloudquery plugins-destination-mysql-v3.2.0`
 4. Add an entry to `plugins.yaml`
 5. Run `make validate` to verify schema + upstream refs
 6. Open a PR — CI will build + smoke test the image

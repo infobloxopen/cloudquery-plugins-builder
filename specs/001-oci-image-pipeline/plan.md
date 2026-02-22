@@ -188,7 +188,7 @@ ARG PLUGIN_DIR=plugins/destination/postgresql
 ARG PLUGIN_VERSION=v8.14.1
 ARG LDFLAGS_VERSION_PATH=""
 ARG BIN_NAME=plugin
-ARG UPSTREAM_REPO=https://github.com/cloudquery/cloudquery
+ARG UPSTREAM_REPO=https://github.com/infobloxopen/cloudquery
 ARG UPSTREAM_TAG=plugins-destination-postgresql-v8.14.1
 
 # Clone upstream at the exact tag
@@ -245,7 +245,7 @@ plugins:
     kind: destination
     version: v7.10.2
     upstream:
-      repo: https://github.com/cloudquery/cloudquery
+      repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-s3-v7.10.2
       commit: <resolve-at-implementation-time>
     build:
@@ -258,7 +258,7 @@ plugins:
     kind: destination
     version: v5.5.1
     upstream:
-      repo: https://github.com/cloudquery/cloudquery
+      repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-file-v5.5.1
       commit: <resolve-at-implementation-time>
     build:
@@ -271,7 +271,7 @@ plugins:
     kind: destination
     version: v8.14.1
     upstream:
-      repo: https://github.com/cloudquery/cloudquery
+      repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-postgresql-v8.14.1
       commit: <resolve-at-implementation-time>
     build:

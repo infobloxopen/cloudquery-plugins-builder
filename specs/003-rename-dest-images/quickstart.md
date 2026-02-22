@@ -63,7 +63,7 @@ plugins:
     kind: source        # This determines the image prefix: cq-source-xkcd
     version: v1.0.0
     upstream:
-      repo: https://github.com/cloudquery/cloudquery
+      repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-source-xkcd-v1.0.0
       commit: <sha>
     build:

@@ -17,7 +17,7 @@ plugins:
     kind: destination                       # "source" or "destination"
     version: v8.14.1                        # Semantic version with v prefix
     upstream:
-      repo: https://github.com/cloudquery/cloudquery
+      repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-postgresql-v8.14.1
       commit: <sha>                         # Full 40-char commit SHA that the tag resolves to
     build:
@@ -73,7 +73,7 @@ The published container image in GHCR.
 | `org.opencontainers.image.title` | Plugin display name | `cloudquery-plugin-postgresql` |
 | `org.opencontainers.image.description` | Plugin description | `CloudQuery postgresql destination plugin` |
 | `org.opencontainers.image.licenses` | License identifier | `MPL-2.0` |
-| `io.cloudquery.plugin.upstream-repo` | Upstream repo URL | `https://github.com/cloudquery/cloudquery` |
+| `io.cloudquery.plugin.upstream-repo` | Upstream repo URL | `https://github.com/infobloxopen/cloudquery` |
 | `io.cloudquery.plugin.upstream-tag` | Upstream git tag | `plugins-destination-postgresql-v8.14.1` |
 | `io.cloudquery.plugin.upstream-commit` | Upstream commit SHA | `fedcba987654...` |
 | `io.cloudquery.plugin.kind` | Plugin kind | `destination` |
@@ -107,7 +107,7 @@ A provenance record linking a manifest entry to its published image.
         "linux/amd64": "sha256:ddeeff...",
         "linux/arm64": "sha256:112233..."
       },
-      "upstream_repo": "https://github.com/cloudquery/cloudquery",
+      "upstream_repo": "https://github.com/infobloxopen/cloudquery",
       "upstream_tag": "plugins-destination-postgresql-v8.14.1",
       "upstream_commit": "fedcba987654...",
       "build_timestamp": "2026-02-12T10:30:00Z",
