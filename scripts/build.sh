@@ -64,6 +64,16 @@ PLUGIN_DIR=$(yq ".plugins[${PLUGIN_INDEX}].build.plugin_dir" "$MANIFEST")
 GO_VERSION=$(yq ".plugins[${PLUGIN_INDEX}].build.go_version" "$MANIFEST")
 BIN_NAME=$(yq ".plugins[${PLUGIN_INDEX}].build.bin_name // \"plugin\"" "$MANIFEST")
 LDFLAGS_VERSION_PATH=$(yq ".plugins[${PLUGIN_INDEX}].build.ldflags_version_path // \"\"" "$MANIFEST")
+CGO_REQUIRED=$(yq ".plugins[${PLUGIN_INDEX}].build.cgo_required // false" "$MANIFEST")
+
+# Derive CGO build args from manifest
+if [[ "$CGO_REQUIRED" == "true" ]]; then
+  CGO_ENABLED="1"
+  BASE_IMAGE="gcr.io/distroless/cc-debian12:nonroot"
+else
+  CGO_ENABLED="0"
+  BASE_IMAGE="gcr.io/distroless/static-debian12:nonroot"
+fi
 
 # Validate plugin kind (defense-in-depth — JSON Schema also enforces this)
 case "$KIND" in
@@ -72,6 +82,11 @@ case "$KIND" in
 esac
 
 IMAGE_NAME="${IMAGE_ORG}/cq-${KIND}-${PLUGIN_NAME}:${VERSION}"
+
+# Generate git suffix for traceability (maps image to this repo's build state)
+GIT_SUFFIX=$(git describe --always --dirty 2>/dev/null || echo "unknown")
+IMAGE_TAG="${VERSION}-${GIT_SUFFIX}"
+IMAGE_NAME="${IMAGE_ORG}/cq-${KIND}-${PLUGIN_NAME}:${IMAGE_TAG}"
 
 # Set default platforms
 if [[ -z "$PLATFORMS" ]]; then
@@ -88,6 +103,9 @@ info "  Image:     ${IMAGE_NAME}"
 info "  Platforms: ${PLATFORMS}"
 info "  Upstream:  ${UPSTREAM_REPO} @ ${UPSTREAM_TAG}"
 info "  Plugin:    ${PLUGIN_DIR}"
+if [[ "$CGO_REQUIRED" == "true" ]]; then
+  info "  CGO:       enabled (base: cc-debian12)"
+fi
 
 BUILD_ARGS=(
   --build-arg "GO_VERSION=${GO_VERSION}"
@@ -97,6 +115,8 @@ BUILD_ARGS=(
   --build-arg "BIN_NAME=${BIN_NAME}"
   --build-arg "UPSTREAM_REPO=${UPSTREAM_REPO}"
   --build-arg "UPSTREAM_TAG=${UPSTREAM_TAG}"
+  --build-arg "CGO_ENABLED=${CGO_ENABLED}"
+  --build-arg "BASE_IMAGE=${BASE_IMAGE}"
 )
 
 # OCI labels per data-model.md § OCI Image

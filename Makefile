@@ -44,7 +44,8 @@ smoke-test: ## Run smoke test for a single plugin (PLUGIN=<name>)
 	fi
 	@KIND=$$(yq ".plugins[] | select(.name == \"$(PLUGIN)\") | .kind" $(MANIFEST)); \
 	VERSION=$$(yq ".plugins[] | select(.name == \"$(PLUGIN)\") | .version" $(MANIFEST)); \
-	IMAGE="ghcr.io/infobloxopen/cq-$${KIND}-$(PLUGIN):$${VERSION}"; \
+	GIT_SUFFIX=$$(git describe --always --dirty 2>/dev/null || echo "unknown"); \
+	IMAGE="ghcr.io/infobloxopen/cq-$${KIND}-$(PLUGIN):$${VERSION}-$${GIT_SUFFIX}"; \
 	./scripts/smoke-test.sh "$${IMAGE}" 7777 30
 
 # Generate per-plugin smoke-test targets: smoke-test-postgresql, smoke-test-s3, ...
@@ -53,7 +54,8 @@ define PLUGIN_SMOKE_TARGET
 smoke-test-$(1): ## Smoke test the $(1) plugin image
 	@KIND=$$(yq ".plugins[] | select(.name == \"$(1)\") | .kind" $(MANIFEST)); \
 	VERSION=$$(yq ".plugins[] | select(.name == \"$(1)\") | .version" $(MANIFEST)); \
-	IMAGE="ghcr.io/infobloxopen/cq-$${KIND}-$(1):$${VERSION}"; \
+	GIT_SUFFIX=$$(git describe --always --dirty 2>/dev/null || echo "unknown"); \
+	IMAGE="ghcr.io/infobloxopen/cq-$${KIND}-$(1):$${VERSION}-$${GIT_SUFFIX}"; \
 	./scripts/smoke-test.sh "$${IMAGE}" 7777 30
 endef
 $(foreach p,$(PLUGINS),$(eval $(call PLUGIN_SMOKE_TARGET,$(p))))
@@ -95,10 +97,11 @@ matrix: ## Print the CI matrix JSON
 .PHONY: clean
 clean: ## Remove built images and temp files
 	@echo "Cleaning up..."
-	@for plugin in $(PLUGINS); do \
+	@GIT_SUFFIX=$$(git describe --always --dirty 2>/dev/null || echo "unknown"); \
+	for plugin in $(PLUGINS); do \
 		KIND=$$(yq ".plugins[] | select(.name == \"$$plugin\") | .kind" $(MANIFEST)); \
 		VERSION=$$(yq ".plugins[] | select(.name == \"$$plugin\") | .version" $(MANIFEST)); \
-		IMAGE="cq-$$KIND-$$plugin:$$VERSION"; \
+		IMAGE="cq-$$KIND-$$plugin:$$VERSION-$$GIT_SUFFIX"; \
 		if docker image inspect "$$IMAGE" >/dev/null 2>&1; then \
 			echo "  Removing $$IMAGE"; \
 			docker rmi "$$IMAGE" 2>/dev/null || true; \

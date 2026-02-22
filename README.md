@@ -100,7 +100,45 @@ plugins:
       go_version: "1.25.6"
       ldflags_version_path: >-                           # Optional: inject version at build time
         github.com/cloudquery/cloudquery/plugins/destination/postgresql/v5/resources/plugin.Version
+      cgo_required: false                                # Optional: default false
+    publish: true                                        # Optional: default true
 ```
+
+### Plugin Inventory
+
+The manifest currently tracks **21 destination plugins**:
+
+| Plugin | Version | CGO | Publish | Notes |
+|--------|---------|-----|---------|-------|
+| azblob | v4.5.2 | No | Yes | Azure Blob Storage |
+| bigquery | v4.7.2 | No | Yes | Google BigQuery |
+| clickhouse | v8.1.1 | No | Yes | ClickHouse |
+| csv | v1.2.2 | No | Yes | CSV files |
+| duckdb | v6.3.1 | **Yes** | Yes | Embedded OLAP (requires CGO) |
+| elasticsearch | v3.6.1 | No | Yes | Elasticsearch |
+| file | v5.5.1 | No | Yes | Local file output |
+| firehose | v2.8.2 | No | Yes | AWS Firehose |
+| gcs | v5.5.2 | No | Yes | Google Cloud Storage |
+| gremlin | v2.7.2 | No | Yes | Apache TinkerPop/Gremlin |
+| kafka | v5.7.1 | No | Yes | Apache Kafka |
+| meilisearch | v2.6.1 | No | Yes | Meilisearch |
+| mongodb | v2.8.2 | No | Yes | MongoDB |
+| mssql | v5.3.2 | No | Yes | Microsoft SQL Server |
+| mysql | v5.6.1 | No | Yes | MySQL |
+| neo4j | v5.5.1 | No | Yes | Neo4j graph database |
+| postgresql | v8.14.1 | No | Yes | PostgreSQL |
+| s3 | v7.10.2 | No | Yes | Amazon S3 |
+| snowflake | v5.2.1 | No | Yes | Snowflake |
+| sqlite | v2.14.1 | **Yes** | Yes | SQLite (requires CGO) |
+| test | v2.8.30 | No | **No** | Test-only plugin (not published) |
+
+### CGO Support
+
+Plugins that depend on C libraries set `cgo_required: true` in their build configuration. This changes:
+- **Build**: `CGO_ENABLED=1` is passed to the Go compiler
+- **Base image**: Switches from `static-debian12` to `cc-debian12` (includes glibc/libgcc)
+
+Currently only **sqlite** and **duckdb** require CGO. See [ADR 005](docs/adr/005-cgo-exception-basis.md) for details.
 
 ### Adding a new plugin
 
@@ -114,15 +152,17 @@ plugins:
 ## Image Naming Convention
 
 ```
-ghcr.io/infobloxopen/cq-<kind>-<name>:<version>
+ghcr.io/infobloxopen/cq-<kind>-<name>:<version>-<git-suffix>
 ```
 
-Where `<kind>` is `source` or `destination`.
+Where `<kind>` is `source` or `destination`, and `<git-suffix>` is derived from `git describe --always --dirty` for traceability.
 
 Examples:
-- `ghcr.io/infobloxopen/cq-destination-postgresql:v8.14.1`
-- `ghcr.io/infobloxopen/cq-destination-s3:v7.10.2`
-- `ghcr.io/infobloxopen/cq-destination-file:v5.5.1`
+- `ghcr.io/infobloxopen/cq-destination-postgresql:v8.14.1-abc1234`
+- `ghcr.io/infobloxopen/cq-destination-s3:v7.10.2-abc1234`
+- `ghcr.io/infobloxopen/cq-destination-duckdb:v6.3.1-abc1234`
+
+See [ADR 004](docs/adr/004-rename-image-convention.md) for the naming convention rationale.
 
 ### OCI Labels
 
@@ -183,12 +223,17 @@ kubectl logs -f job/cloudquery-sync-postgresql
 │   ├── smoke-test.sh             # TCP smoke test
 │   ├── validate-manifest.sh      # Schema + ref validation
 │   ├── generate-matrix.sh        # GHA matrix generation
-│   └── generate-build-index.sh   # Build index aggregation
+│   ├── generate-build-index.sh   # Build index aggregation
+│   ├── update-plugins.sh         # Auto-update plugin versions
+│   ├── update-go-version.sh      # Auto-update Go version
+│   └── detect-new-plugins.sh     # Detect untracked plugins
 ├── .github/
 │   ├── workflows/
 │   │   ├── publish.yaml          # Main branch → GHCR
 │   │   ├── pr-validate.yaml      # PR → build + test (no push)
-│   │   └── check-updates.yaml    # Weekly upstream check
+│   │   ├── check-updates.yaml    # Weekly upstream check
+│   │   ├── update-plugins.yaml   # Daily plugin version updates
+│   │   └── update-go-version.yaml # Weekly Go version updates
 │   └── actions/build-plugin/
 │       └── action.yaml           # Reusable composite action
 ├── examples/                     # K8s deployment examples per plugin
@@ -223,6 +268,28 @@ On merge to `main` when `plugins.yaml` changes:
 ### Upstream Update Check (`check-updates.yaml`)
 
 Weekly cron — checks for newer plugin versions upstream and opens a PR.
+
+### Plugin Version Updates (`update-plugins.yaml`)
+
+Daily cron at 06:00 UTC — automatically detects new upstream destination plugin releases:
+
+1. Runs `scripts/update-plugins.sh --dry-run` to check for updates
+2. Applies updates to `plugins.yaml` (tag, commit SHA, and ldflags path for major bumps)
+3. Validates manifest with `make validate`
+4. Detects newly published plugins not yet in the manifest
+5. Opens a PR on the `auto/update-plugins` branch for human review
+
+Also supports `workflow_dispatch` for on-demand triggering.
+
+### Go Version Updates (`update-go-version.yaml`)
+
+Weekly cron on Mondays at 09:00 UTC — updates the Go toolchain version:
+
+1. Fetches the latest stable Go release that is ≥14 days old (stabilization buffer)
+2. Updates `go_version` in `plugins.yaml` if a newer version is available
+3. Validates manifest and opens a PR on the `auto/update-go-version` branch
+
+See [ADR 006](docs/adr/006-auto-update-pipeline.md) for the pipeline design rationale.
 
 ## Contributing
 
