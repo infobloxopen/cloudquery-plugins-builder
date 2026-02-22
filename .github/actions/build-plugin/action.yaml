@@ -131,6 +131,13 @@ runs:
           io.cloudquery.plugin.upstream-repo=${{ inputs.upstream_repo }}
           io.cloudquery.plugin.upstream-tag=${{ inputs.upstream_tag }}
           io.cloudquery.plugin.upstream-commit=${{ inputs.upstream_commit }}
+        annotations: |
+          manifest:org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          manifest:org.opencontainers.image.revision=${{ github.sha }}
+          manifest:org.opencontainers.image.version=${{ inputs.version }}
+          manifest:org.opencontainers.image.title=cq-${{ inputs.kind }}-${{ inputs.name }}
+          manifest:org.opencontainers.image.description=${{ inputs.description || format('CloudQuery {0} plugin for {1}', inputs.kind, inputs.name) }}
+          manifest:org.opencontainers.image.licenses=MPL-2.0
 
     - name: Smoke test
       if: inputs.smoke_test == 'true'
