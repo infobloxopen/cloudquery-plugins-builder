@@ -49,6 +49,11 @@
         },
         "build": {
           "$ref": "#/$defs/build"
+        },
+        "publish": {
+          "type": "boolean",
+          "default": true,
+          "description": "When false, the image is built but not pushed to GHCR. Used for development/test plugins."
         }
       }
     },
@@ -99,6 +104,11 @@
         "ldflags_version_path": {
           "type": "string",
           "description": "Go package path for -X version injection via ldflags."
+        },
+        "cgo_required": {
+          "type": "boolean",
+          "default": false,
+          "description": "When true, build with CGO_ENABLED=1 and use distroless/cc-debian12 base image. Exception-basis only (e.g., sqlite, duckdb)."
         }
       }
     }

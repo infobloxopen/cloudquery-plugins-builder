@@ -32,7 +32,9 @@ yq -o json '.plugins[]' "$MANIFEST" \
           plugin_dir: .build.plugin_dir,
           go_version: .build.go_version,
           bin_name: (.build.bin_name // "plugin"),
-          ldflags_version_path: (.build.ldflags_version_path // "")
+          ldflags_version_path: (.build.ldflags_version_path // ""),
+          cgo_required: (.build.cgo_required // false),
+          publish: (.publish // true)
         }
       ]
     }'

@@ -1,5 +1,6 @@
 apiVersion: v1
 plugins:
+  # ── Existing plugins ──────────────────────────────────────────────────────
   - name: s3
     kind: destination
     version: v7.10.2
@@ -12,7 +13,6 @@ plugins:
       go_version: "1.25.6"
       ldflags_version_path: >-
         github.com/cloudquery/cloudquery/plugins/destination/s3/v7/resources/plugin.Version
-
   - name: file
     kind: destination
     version: v5.5.1
@@ -25,7 +25,6 @@ plugins:
       go_version: "1.25.6"
       ldflags_version_path: >-
         github.com/cloudquery/cloudquery/plugins/destination/file/v5/resources/plugin.Version
-
   - name: postgresql
     kind: destination
     version: v8.14.1
@@ -38,3 +37,225 @@ plugins:
       go_version: "1.25.6"
       ldflags_version_path: >-
         github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/resources/plugin.Version
+  # ── New non-CGO destination plugins ───────────────────────────────────────
+  - name: azblob
+    kind: destination
+    version: v4.5.2
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-azblob-v4.5.2
+      commit: 732dc77b3a2c34ba631de3d96c848cdc682de32b
+    build:
+      plugin_dir: plugins/destination/azblob
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/resources/plugin.Version
+  - name: bigquery
+    kind: destination
+    version: v4.7.2
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-bigquery-v4.7.2
+      commit: 19935a11a1508599a869b4ec85855789a2bae101
+    build:
+      plugin_dir: plugins/destination/bigquery
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/resources/plugin.Version
+  - name: clickhouse
+    kind: destination
+    version: v8.1.1
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-clickhouse-v8.1.1
+      commit: 0185737bb4b53e84898fbeb1306924435f642e46
+    build:
+      plugin_dir: plugins/destination/clickhouse
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/resources/plugin.Version
+  - name: csv
+    kind: destination
+    version: v1.2.2
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-csv-v1.2.2
+      commit: a4f13db8ca5fcdc24ef0981eb870dd862e200e63
+    build:
+      plugin_dir: plugins/destination/csv
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/csv/resources/plugin.Version
+  - name: elasticsearch
+    kind: destination
+    version: v3.6.1
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-elasticsearch-v3.6.1
+      commit: 2a4dcab13804581b88c2c38c45af5d9a6d76a982
+    build:
+      plugin_dir: plugins/destination/elasticsearch
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v3/resources/plugin.Version
+  - name: firehose
+    kind: destination
+    version: v2.8.2
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-firehose-v2.8.2
+      commit: 1ae165c8aa76a52d062a235c180ce73ce3f4b9af
+    build:
+      plugin_dir: plugins/destination/firehose
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/resources/plugin.Version
+  - name: gcs
+    kind: destination
+    version: v5.5.2
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-gcs-v5.5.2
+      commit: 4f35807b88f904474064d4a6d9393f2f4317c212
+    build:
+      plugin_dir: plugins/destination/gcs
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/resources/plugin.Version
+  - name: gremlin
+    kind: destination
+    version: v2.7.2
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-gremlin-v2.7.2
+      commit: 9a3ac4ea668605f430bd48c3f540bb74963018ec
+    build:
+      plugin_dir: plugins/destination/gremlin
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/resources/plugin.Version
+  - name: kafka
+    kind: destination
+    version: v5.7.1
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-kafka-v5.7.1
+      commit: d760d0af5b02211cf14e5cf048b30828b24dabb8
+    build:
+      plugin_dir: plugins/destination/kafka
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/resources/plugin.Version
+  - name: meilisearch
+    kind: destination
+    version: v2.6.1
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-meilisearch-v2.6.1
+      commit: 1a3570a8896cbe23429699570913b71f6f07207a
+    build:
+      plugin_dir: plugins/destination/meilisearch
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/resources/plugin.Version
+  - name: mongodb
+    kind: destination
+    version: v2.8.2
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-mongodb-v2.8.2
+      commit: c2b3743d4bdb0a96cc1922e7411a72e41dda74b3
+    build:
+      plugin_dir: plugins/destination/mongodb
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/resources/plugin.Version
+  - name: mssql
+    kind: destination
+    version: v5.3.2
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-mssql-v5.3.2
+      commit: d227b76dce955482838019fa7384747d8112bf23
+    build:
+      plugin_dir: plugins/destination/mssql
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/resources/plugin.Version
+  - name: mysql
+    kind: destination
+    version: v5.6.1
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-mysql-v5.6.1
+      commit: e4d2458c959ed546f97c04d196c9acb6adbac46d
+    build:
+      plugin_dir: plugins/destination/mysql
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/resources/plugin.Version
+  - name: neo4j
+    kind: destination
+    version: v5.5.1
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-neo4j-v5.5.1
+      commit: c428d7d75f1dad6e84bc68f6dd947793804ba079
+    build:
+      plugin_dir: plugins/destination/neo4j
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/resources/plugin.Version
+  - name: snowflake
+    kind: destination
+    version: v5.2.1
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-snowflake-v5.2.1
+      commit: cc0719f2cb0ddff70fcb520e20c02d654b8b138b
+    build:
+      plugin_dir: plugins/destination/snowflake
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/resources/plugin.Version
+  # ── CGO destination plugins ───────────────────────────────────────────────
+  - name: duckdb
+    kind: destination
+    version: v6.3.1
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-duckdb-v6.3.1
+      commit: f22b3fd51d3ddbb06b2f61ccb6120362f19fff34
+    build:
+      plugin_dir: plugins/destination/duckdb
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/resources/plugin.Version
+      cgo_required: true
+  - name: sqlite
+    kind: destination
+    version: v2.14.1
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-sqlite-v2.14.1
+      commit: 90fec7f2d2d0e2eff85cbc6d98b129ac6b3d3381
+    build:
+      plugin_dir: plugins/destination/sqlite
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/resources/plugin.Version
+      cgo_required: true
+  # ── Non-publishable plugins ───────────────────────────────────────────────
+  - name: test
+    kind: destination
+    version: v2.8.30
+    upstream:
+      repo: https://github.com/infobloxopen/cloudquery
+      tag: plugins-destination-test-v2.8.30
+      commit: 441d06f7851ca53d8dc7d8d883e79023060fef68
+    build:
+      plugin_dir: plugins/destination/test
+      go_version: "1.25.6"
+      ldflags_version_path: >-
+        github.com/cloudquery/cloudquery/plugins/destination/test/v2/resources/plugin.Version
+    publish: false

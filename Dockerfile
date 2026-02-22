@@ -7,6 +7,7 @@
 # Stage 1: Build the plugin binary from upstream source
 # ============================================================
 ARG GO_VERSION=1.25.6
+ARG BASE_IMAGE=gcr.io/distroless/static-debian12:nonroot
 FROM golang:${GO_VERSION} AS plugin-builder
 
 ARG PLUGIN_DIR=plugins/destination/postgresql
@@ -15,6 +16,7 @@ ARG LDFLAGS_VERSION_PATH=""
 ARG BIN_NAME=plugin
 ARG UPSTREAM_REPO=https://github.com/infobloxopen/cloudquery
 ARG UPSTREAM_TAG=plugins-destination-postgresql-v8.14.1
+ARG CGO_ENABLED=0
 
 # Clone upstream at the exact tag (shallow clone for speed)
 RUN git clone --depth=1 --branch="${UPSTREAM_TAG}" "${UPSTREAM_REPO}" /src
@@ -25,10 +27,10 @@ WORKDIR /src/${PLUGIN_DIR}
 RUN --mount=type=cache,target=/go/pkg/mod \
     go mod download
 
-# Build static binary — no CGO, no external dependencies
+# Build plugin binary (CGO_ENABLED=0 for static, =1 for CGO plugins like sqlite/duckdb)
 RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build \
-    CGO_ENABLED=0 GOOS=linux go build \
+    CGO_ENABLED=${CGO_ENABLED} GOOS=linux go build \
     -ldflags="-s -w -X ${LDFLAGS_VERSION_PATH}=${PLUGIN_VERSION}" \
     -o /${BIN_NAME} .
 
@@ -47,8 +49,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /entrypoint .
 
 # ============================================================
 # Stage 3: Final minimal image (distroless, non-root)
+# static-debian12 for pure Go plugins; cc-debian12 for CGO plugins (glibc + libstdc++)
 # ============================================================
-FROM gcr.io/distroless/static-debian12:nonroot
+FROM ${BASE_IMAGE}
 
 # Copy binaries from builder stages
 COPY --from=plugin-builder /plugin /plugin
