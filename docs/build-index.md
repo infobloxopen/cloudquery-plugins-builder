@@ -7,13 +7,31 @@
 
 | Plugin | Kind | Version | Image | Upstream Tag | Upstream Commit | Built |
 |--------|------|---------|-------|-------------|-----------------|-------|
-| file | destination | v5.5.1 | `ghcr.io/infobloxopen/cq-destination-file:v5.5.1` | plugins-destination-file-v5.5.1 | `09c6e152c533` | 2026-02-22T08:26:48-06:00 |
-| postgresql | destination | v8.14.1 | `ghcr.io/infobloxopen/cq-destination-postgresql:v8.14.1` | plugins-destination-postgresql-v8.14.1 | `a5431aea2c89` | 2026-02-22T08:26:48-06:00 |
-| s3 | destination | v7.10.2 | `ghcr.io/infobloxopen/cq-destination-s3:v7.10.2` | plugins-destination-s3-v7.10.2 | `090de0b96fa1` | 2026-02-22T08:26:48-06:00 |
+| azblob | destination | v4.5.2 | `ghcr.io/infobloxopen/cq-destination-azblob:v4.5.2` | plugins-destination-azblob-v4.5.2 | `732dc77b3a2c` | 2026-02-22T12:50:27-06:00 |
+| bigquery | destination | v4.7.2 | `ghcr.io/infobloxopen/cq-destination-bigquery:v4.7.2` | plugins-destination-bigquery-v4.7.2 | `19935a11a150` | 2026-02-22T12:50:27-06:00 |
+| clickhouse | destination | v8.1.1 | `ghcr.io/infobloxopen/cq-destination-clickhouse:v8.1.1` | plugins-destination-clickhouse-v8.1.1 | `0185737bb4b5` | 2026-02-22T12:50:27-06:00 |
+| csv | destination | v1.2.2 | `ghcr.io/infobloxopen/cq-destination-csv:v1.2.2` | plugins-destination-csv-v1.2.2 | `a4f13db8ca5f` | 2026-02-22T12:50:27-06:00 |
+| duckdb | destination | v6.3.1 | `ghcr.io/infobloxopen/cq-destination-duckdb:v6.3.1` | plugins-destination-duckdb-v6.3.1 | `f22b3fd51d3d` | 2026-02-22T12:50:27-06:00 |
+| elasticsearch | destination | v3.6.1 | `ghcr.io/infobloxopen/cq-destination-elasticsearch:v3.6.1` | plugins-destination-elasticsearch-v3.6.1 | `2a4dcab13804` | 2026-02-22T12:50:27-06:00 |
+| file | destination | v5.5.1 | `ghcr.io/infobloxopen/cq-destination-file:v5.5.1` | plugins-destination-file-v5.5.1 | `09c6e152c533` | 2026-02-22T12:50:27-06:00 |
+| firehose | destination | v2.8.2 | `ghcr.io/infobloxopen/cq-destination-firehose:v2.8.2` | plugins-destination-firehose-v2.8.2 | `1ae165c8aa76` | 2026-02-22T12:50:27-06:00 |
+| gcs | destination | v5.5.2 | `ghcr.io/infobloxopen/cq-destination-gcs:v5.5.2` | plugins-destination-gcs-v5.5.2 | `4f35807b88f9` | 2026-02-22T12:50:27-06:00 |
+| gremlin | destination | v2.7.2 | `ghcr.io/infobloxopen/cq-destination-gremlin:v2.7.2` | plugins-destination-gremlin-v2.7.2 | `9a3ac4ea6686` | 2026-02-22T12:50:27-06:00 |
+| kafka | destination | v5.7.1 | `ghcr.io/infobloxopen/cq-destination-kafka:v5.7.1` | plugins-destination-kafka-v5.7.1 | `d760d0af5b02` | 2026-02-22T12:50:27-06:00 |
+| meilisearch | destination | v2.6.1 | `ghcr.io/infobloxopen/cq-destination-meilisearch:v2.6.1` | plugins-destination-meilisearch-v2.6.1 | `1a3570a8896c` | 2026-02-22T12:50:27-06:00 |
+| mongodb | destination | v2.8.2 | `ghcr.io/infobloxopen/cq-destination-mongodb:v2.8.2` | plugins-destination-mongodb-v2.8.2 | `c2b3743d4bdb` | 2026-02-22T12:50:27-06:00 |
+| mssql | destination | v5.3.2 | `ghcr.io/infobloxopen/cq-destination-mssql:v5.3.2` | plugins-destination-mssql-v5.3.2 | `d227b76dce95` | 2026-02-22T12:50:27-06:00 |
+| mysql | destination | v5.6.1 | `ghcr.io/infobloxopen/cq-destination-mysql:v5.6.1` | plugins-destination-mysql-v5.6.1 | `e4d2458c959e` | 2026-02-22T12:50:27-06:00 |
+| neo4j | destination | v5.5.1 | `ghcr.io/infobloxopen/cq-destination-neo4j:v5.5.1` | plugins-destination-neo4j-v5.5.1 | `c428d7d75f1d` | 2026-02-22T12:50:27-06:00 |
+| postgresql | destination | v8.14.1 | `ghcr.io/infobloxopen/cq-destination-postgresql:v8.14.1` | plugins-destination-postgresql-v8.14.1 | `a5431aea2c89` | 2026-02-22T12:50:27-06:00 |
+| s3 | destination | v7.10.2 | `ghcr.io/infobloxopen/cq-destination-s3:v7.10.2` | plugins-destination-s3-v7.10.2 | `090de0b96fa1` | 2026-02-22T12:50:27-06:00 |
+| snowflake | destination | v5.2.1 | `ghcr.io/infobloxopen/cq-destination-snowflake:v5.2.1` | plugins-destination-snowflake-v5.2.1 | `cc0719f2cb0d` | 2026-02-22T12:50:27-06:00 |
+| sqlite | destination | v2.14.1 | `ghcr.io/infobloxopen/cq-destination-sqlite:v2.14.1` | plugins-destination-sqlite-v2.14.1 | `90fec7f2d2d0` | 2026-02-22T12:50:27-06:00 |
+| test | destination | v2.8.30 | `ghcr.io/infobloxopen/cq-destination-test:v2.8.30` | plugins-destination-test-v2.8.30 | `441d06f7851c` | 2026-02-22T12:50:27-06:00 |
 
 ## Artifact
 
 The machine-readable build index (`build-index.json`) is available as a workflow artifact
-from each [publish run](https://github.com/infobloxopen/cloudquery-plugins-builder/actions/runs/22278980476).
+from each [publish run](https://github.com/infobloxopen/cloudquery-plugins-builder/actions/runs/22283155874).
 
 **Schema**: [`schemas/build-index.schema.json`](../schemas/build-index.schema.json)
