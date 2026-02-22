@@ -4,6 +4,7 @@ plugins:
   - name: s3
     kind: destination
     version: v7.10.2
+    description: CloudQuery destination plugin for Amazon S3
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-s3-v7.10.2
@@ -16,6 +17,7 @@ plugins:
   - name: file
     kind: destination
     version: v5.5.1
+    description: CloudQuery destination plugin for local file output
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-file-v5.5.1
@@ -28,6 +30,7 @@ plugins:
   - name: postgresql
     kind: destination
     version: v8.14.1
+    description: CloudQuery destination plugin for PostgreSQL
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-postgresql-v8.14.1
@@ -41,6 +44,7 @@ plugins:
   - name: azblob
     kind: destination
     version: v4.5.2
+    description: CloudQuery destination plugin for Azure Blob Storage
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-azblob-v4.5.2
@@ -53,6 +57,7 @@ plugins:
   - name: bigquery
     kind: destination
     version: v4.7.2
+    description: CloudQuery destination plugin for Google BigQuery
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-bigquery-v4.7.2
@@ -65,6 +70,7 @@ plugins:
   - name: clickhouse
     kind: destination
     version: v8.1.1
+    description: CloudQuery destination plugin for ClickHouse
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-clickhouse-v8.1.1
@@ -77,6 +83,7 @@ plugins:
   - name: csv
     kind: destination
     version: v1.2.2
+    description: CloudQuery destination plugin for CSV files
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-csv-v1.2.2
@@ -89,6 +96,7 @@ plugins:
   - name: elasticsearch
     kind: destination
     version: v3.6.1
+    description: CloudQuery destination plugin for Elasticsearch
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-elasticsearch-v3.6.1
@@ -101,6 +109,7 @@ plugins:
   - name: firehose
     kind: destination
     version: v2.8.2
+    description: CloudQuery destination plugin for AWS Kinesis Data Firehose
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-firehose-v2.8.2
@@ -113,6 +122,7 @@ plugins:
   - name: gcs
     kind: destination
     version: v5.5.2
+    description: CloudQuery destination plugin for Google Cloud Storage
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-gcs-v5.5.2
@@ -125,6 +135,7 @@ plugins:
   - name: gremlin
     kind: destination
     version: v2.7.2
+    description: CloudQuery destination plugin for Apache TinkerPop Gremlin
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-gremlin-v2.7.2
@@ -137,6 +148,7 @@ plugins:
   - name: kafka
     kind: destination
     version: v5.7.1
+    description: CloudQuery destination plugin for Apache Kafka
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-kafka-v5.7.1
@@ -149,6 +161,7 @@ plugins:
   - name: meilisearch
     kind: destination
     version: v2.6.1
+    description: CloudQuery destination plugin for Meilisearch
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-meilisearch-v2.6.1
@@ -161,6 +174,7 @@ plugins:
   - name: mongodb
     kind: destination
     version: v2.8.2
+    description: CloudQuery destination plugin for MongoDB
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-mongodb-v2.8.2
@@ -173,6 +187,7 @@ plugins:
   - name: mssql
     kind: destination
     version: v5.3.2
+    description: CloudQuery destination plugin for Microsoft SQL Server
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-mssql-v5.3.2
@@ -185,6 +200,7 @@ plugins:
   - name: mysql
     kind: destination
     version: v5.6.1
+    description: CloudQuery destination plugin for MySQL
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-mysql-v5.6.1
@@ -197,6 +213,7 @@ plugins:
   - name: neo4j
     kind: destination
     version: v5.5.1
+    description: CloudQuery destination plugin for Neo4j
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-neo4j-v5.5.1
@@ -209,6 +226,7 @@ plugins:
   - name: snowflake
     kind: destination
     version: v5.2.1
+    description: CloudQuery destination plugin for Snowflake
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-snowflake-v5.2.1
@@ -222,6 +240,7 @@ plugins:
   - name: duckdb
     kind: destination
     version: v6.3.1
+    description: CloudQuery destination plugin for DuckDB
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-duckdb-v6.3.1
@@ -235,6 +254,7 @@ plugins:
   - name: sqlite
     kind: destination
     version: v2.14.1
+    description: CloudQuery destination plugin for SQLite
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-sqlite-v2.14.1
@@ -249,6 +269,7 @@ plugins:
   - name: test
     kind: destination
     version: v2.8.30
+    description: CloudQuery test destination plugin (not published)
     upstream:
       repo: https://github.com/infobloxopen/cloudquery
       tag: plugins-destination-test-v2.8.30

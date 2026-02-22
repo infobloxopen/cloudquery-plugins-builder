@@ -26,6 +26,7 @@ yq -o json '.plugins[]' "$MANIFEST" \
           name: .name,
           kind: .kind,
           version: .version,
+          description: (.description // "CloudQuery \(.kind) plugin for \(.name)"),
           upstream_repo: .upstream.repo,
           upstream_tag: .upstream.tag,
           upstream_commit: .upstream.commit,

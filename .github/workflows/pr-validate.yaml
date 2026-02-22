@@ -84,6 +84,7 @@ jobs:
           name: ${{ matrix.name }}
           kind: ${{ matrix.kind }}
           version: ${{ matrix.version }}
+          description: ${{ matrix.description }}
           upstream_repo: ${{ matrix.upstream_repo }}
           upstream_tag: ${{ matrix.upstream_tag }}
           upstream_commit: ${{ matrix.upstream_commit }}

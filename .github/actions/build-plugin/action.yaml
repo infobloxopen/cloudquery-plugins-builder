@@ -11,6 +11,10 @@ inputs:
   version:
     description: 'Plugin version (e.g., v8.14.1)'
     required: true
+  description:
+    description: 'Human-readable description for OCI image label'
+    required: false
+    default: ''
   upstream_repo:
     description: 'Upstream git repository URL'
     required: true
@@ -70,8 +74,11 @@ runs:
       id: meta
       shell: bash
       run: |
-        IMAGE="${{ inputs.registry }}/cq-${{ inputs.kind }}-${{ inputs.name }}:${{ inputs.version }}"
+        GIT_SUFFIX=$(git describe --always --dirty 2>/dev/null || echo "unknown")
+        IMAGE_TAG="${{ inputs.version }}-${GIT_SUFFIX}"
+        IMAGE="${{ inputs.registry }}/cq-${{ inputs.kind }}-${{ inputs.name }}:${IMAGE_TAG}"
         echo "image=${IMAGE}" >> "$GITHUB_OUTPUT"
+        echo "image_tag=${IMAGE_TAG}" >> "$GITHUB_OUTPUT"
         echo "Building: ${IMAGE}"
 
     - name: Set up QEMU
@@ -117,7 +124,7 @@ runs:
           org.opencontainers.image.created=${{ github.event.head_commit.timestamp || github.event.pull_request.updated_at }}
           org.opencontainers.image.version=${{ inputs.version }}
           org.opencontainers.image.title=cq-${{ inputs.kind }}-${{ inputs.name }}
-          org.opencontainers.image.description=CloudQuery ${{ inputs.kind }} plugin ${{ inputs.name }} ${{ inputs.version }}
+          org.opencontainers.image.description=${{ inputs.description || format('CloudQuery {0} plugin for {1}', inputs.kind, inputs.name) }}
           org.opencontainers.image.licenses=MPL-2.0
           io.cloudquery.plugin.kind=${{ inputs.kind }}
           io.cloudquery.plugin.name=${{ inputs.name }}

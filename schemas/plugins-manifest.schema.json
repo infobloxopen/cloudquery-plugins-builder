@@ -44,6 +44,11 @@
           "description": "Semantic version with v prefix.",
           "examples": ["v8.14.1", "v7.10.2"]
         },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description for the OCI image label.",
+          "examples": ["CloudQuery destination plugin for PostgreSQL"]
+        },
         "upstream": {
           "$ref": "#/$defs/upstream"
         },
