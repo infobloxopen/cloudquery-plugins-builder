@@ -34,6 +34,10 @@ inputs:
     description: 'Go package path for -X version injection'
     required: false
     default: ''
+  cgo_required:
+    description: 'Whether the plugin requires CGO (true/false)'
+    required: false
+    default: 'false'
   push:
     description: 'Push image to registry (true/false)'
     required: false
@@ -105,6 +109,8 @@ runs:
           BIN_NAME=${{ inputs.bin_name }}
           UPSTREAM_REPO=${{ inputs.upstream_repo }}
           UPSTREAM_TAG=${{ inputs.upstream_tag }}
+          CGO_ENABLED=${{ inputs.cgo_required == 'true' && '1' || '0' }}
+          BASE_IMAGE=${{ inputs.cgo_required == 'true' && 'gcr.io/distroless/cc-debian12:nonroot' || 'gcr.io/distroless/static-debian12:nonroot' }}
         labels: |
           org.opencontainers.image.source=https://github.com/${{ github.repository }}
           org.opencontainers.image.revision=${{ github.sha }}

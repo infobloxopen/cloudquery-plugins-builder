@@ -91,8 +91,9 @@ jobs:
           go_version: ${{ matrix.go_version }}
           bin_name: ${{ matrix.bin_name }}
           ldflags_version_path: ${{ matrix.ldflags_version_path }}
-          push: 'true'
-          cosign_sign: 'true'
+          cgo_required: ${{ matrix.cgo_required }}
+          push: ${{ matrix.publish && 'true' || 'false' }}
+          cosign_sign: ${{ matrix.publish && 'true' || 'false' }}
           smoke_test: 'true'
 
       - name: Export build metadata

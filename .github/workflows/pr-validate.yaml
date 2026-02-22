@@ -91,6 +91,7 @@ jobs:
           go_version: ${{ matrix.go_version }}
           bin_name: ${{ matrix.bin_name }}
           ldflags_version_path: ${{ matrix.ldflags_version_path }}
+          cgo_required: ${{ matrix.cgo_required }}
           push: 'false'
           smoke_test: 'true'
 
